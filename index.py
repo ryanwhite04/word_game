@@ -7,65 +7,72 @@ def getChoices(n, length):
 
 def matchWords(a, b):
     return len([i for i, letter in enumerate(a) if letter is b[i]]);
-    
+   
+def getSettings(prompt):
+
+    while True:
+        option = input(prompt).lower()[0]
+        if option not in "emh":
+            print("Option must be E, M, or H")
+            continue
+        else:
+            break
+    return {
+        "e": { "choices": 7, "guesses": 5 },
+        "m": { "choices": 8, "guesses": 4 },
+        "h": { "choices": 9, "guesses": 3 },
+    }[option]
+
 def main():
-
     again = True # Whether or not to play again
-
     while (again):
-        print("Please select difficulty from the following:")
-        for option in ["Easy", "Medium", "Hard"]:
-            print(f'- {option} {option[0]}')
-
-        selection = input().lower()
-        while (selection not in ["e", "m", "h"]):
-            print("Please enter e, m, or h")
-            selection = input().lower()
-        
-        difficulty = {
-            "e": { "choices": 7, "guesses": 5 },
-            "m": { "choices": 8, "guesses": 4 },
-            "h": { "choices": 9, "guesses": 3 },
-        }[selection]
-
-        game = Game(**difficulty)
-        print("You Win") if game.begin() else print("You Lose")
-        print("Play Again?")
-        again = input().lower() in ["yes", "y", "sure", "why not", "absolutely", "yes please"]
+        game = Game(**getSettings("Choose [E]asy, [M]edium, or [Hard]: "), length=4)
+        while not game.over:
+            game.prompt()
+        print("You Win") if game.won else print("You Lose")
+        again = input("Play Again? (yes/no)").lower() in ["yes", "y"]
 
 class Game:
 
-    def __init__(self, choices, guesses):
-        self.choices = getChoices(choices, 6)
+    def __init__(self, choices, guesses, length):
+        self.choices = getChoices(choices, length)
         self.answer = random.choice(self.choices)
         self.guesses = guesses
         self.answers = {}
+        self.length = length
+        self.over = False
 
-    def checkOption(self, option):
-        return option.isnumeric() and int(option) >= 1 and int(option) <= len(self.choices)
-
-    def begin(self):
-        win = False
-        while (self.guesses and not win):
-            print('Choose the correct word from')
-            self.displayChoices()
-            print(f'Guesses remaining: {self.guesses}') 
-            print('Enter Choice')
-            option = input()
-            while (not self.checkOption(option)):
+    # Kevin: https://stackoverflow.com/questions/23294658/asking-the-user-for-input-until-they-give-a-valid-response
+    def getOption(self, prompt):
+        while True:
+            try:
+                option = int(input(prompt)) - 1
+            except ValueError:
+                print("It has to be a number")
+                continue
+            if option < 0 or option >= len(self.choices):
                 print(f'Please enter a value between 1 and {len(self.choices)}')
-                option = input()
-            choice = self.choices[int(option) - 1]
-            score = self.guess(choice)
-            self.answers[choice] = score
-            win = score is 6
-        return win
-    
-    def guess(self, choice):
-        self.guesses = self.guesses - 1
-        return matchWords(self.answer, choice)
+                continue
+            elif self.choices[option] in self.answers:
+                print("You selected this previously, try a new word")
+                continue
+            else:
+                break
+        return option
 
+    def prompt(self):
+        self.displayChoices()
+        option = self.getOption("Enter your selection: ")
+        choice = self.choices[int(option)]
+        self.guesses -= 1
+        score = matchWords(self.answer, choice)
+        self.answers[choice] = score
+        self.won = score is self.length
+        self.over = self.guesses is 0 or self.won
+    
     def displayChoices(self):
+        print('Choose the correct word from')
         for i, choice in enumerate(self.choices):
             print(i+1, choice, self.answers[choice] if choice in self.answers else '')
+        print(f'Guesses remaining: {self.guesses}') 
 main()
