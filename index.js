@@ -1,11 +1,17 @@
-
-async function main(words, guesses) {
-    const list = await fetch('diceware.wordlist.asc.txt')
+function getWords(url) {
+    return fetch(url)
         .then(body => body.text())
         .then(text => text.split('\n').slice(2, 6**5 + 2).map(line => line.split('\t')[1]))
+}
+
+function getChoices(options, count) {
+    return [...new Array(count)].map(i => options.splice(~~(options.length*Math.random()), 1)[0]);
+}
+async function main(words, guesses) {
+    const options = await getWords('diceware.wordlist.asc.txt')
         .then(list => list.filter(word => word.length == 6))
         .catch(console.error);
-    const choices = [...new Array(words)].map(i => list.splice(~~(list.length*Math.random()), 1)[0]);
+    const choices = getChoices(options, words);
     const correct = choices[~~(Math.random()*choices.length)];
     console.log('Select from the following: ', choices, correct);
     let question = (answer) => {
