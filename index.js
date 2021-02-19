@@ -54,6 +54,9 @@ getWords(new URL('diceware.wordlist.asc.txt', import.meta.url).href).then(words 
         constructor() {
             super();
             this.words = words
+            this.options = 8;
+            this.guesses = 4;
+            this.length = 6;
             const root = this.attachShadow({ mode: 'open' });
             const style = document.createElement('style');
             style.textContent = `
