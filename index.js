@@ -9,7 +9,7 @@ function getChoices(options, count) {
     return [...new Array(count)].map(i => options.splice(~~(options.length*Math.random()), 1)[0]);
 }
 async function main(words, guesses) {
-    const options = await getWords('diceware.wordlist.asc.txt')
+    const options = await getWords(new URL('diceware.wordlist.asc.txt', import.meta.url).href)
         .then(list => list.filter(word => word.length == 6))
         .catch(console.error);
     const choices = getChoices(options, words);
@@ -54,9 +54,9 @@ getWords(new URL('diceware.wordlist.asc.txt', import.meta.url).href).then(words 
         constructor() {
             super();
             this.words = words
-            this.options = 8;
-            this.guesses = 4;
-            this.length = 6;
+            this.hasAttribute('length') || this.setAttribute('length', 6);
+            this.hasAttribute('options') || this.setAttribute('options', 8);
+            this.hasAttribute('guesses') || this.setAttribute('guesses', 4);
             const root = this.attachShadow({ mode: 'open' });
             const style = document.createElement('style');
             style.textContent = `
