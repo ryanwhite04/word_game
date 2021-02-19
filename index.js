@@ -1,4 +1,5 @@
 function getWords(url) {
+    console.log('getWords', url);
     return fetch(url)
         .then(body => body.text())
         .then(text => text.split('\n').slice(2, 6**5 + 2).map(line => line.split('\t')[1]))
