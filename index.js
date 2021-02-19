@@ -35,7 +35,7 @@ main(8, 4).then(console.log).catch(console.error);
 
 const template = document.createElement('template');
 
-getWords('diceware.wordlist.asc.txt').then(words => {
+getWords(new URL('diceware.wordlist.asc.txt', import.meta.url).href).then(words => {
     customElements.define('word-game', class extends HTMLElement {
         
         static get observedAttributes() {
