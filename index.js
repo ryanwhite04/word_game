@@ -47,6 +47,7 @@ getWords(new URL('diceware.wordlist.asc.txt', import.meta.url).href).then(words 
             const template = document.createElement('template');
             template.innerHTML = `
                 <p>bla</p>
+                <input id="reset" type="button" value="Reset">
                 <ol id="choices"></ol>
             `;
             return template;
@@ -70,6 +71,7 @@ getWords(new URL('diceware.wordlist.asc.txt', import.meta.url).href).then(words 
             `;
             this.shadowRoot.append(style); // can accept any other elements too
             this.shadowRoot.appendChild(this.constructor.html.content.cloneNode(true))
+            this.shadowRoot.getElementById('reset').addEventListener('click', this.reset.bind(this));
             console.log(this, this.options, this.guesses);
         }
 
@@ -139,6 +141,12 @@ getWords(new URL('diceware.wordlist.asc.txt', import.meta.url).href).then(words 
             return parseInt(this.getAttribute('guesses'));
         }
 
+        reset() {
+            this.choices = this.choose();
+            this.remaining = this.guesses;
+            this.displayChoices();
+        }
+
         choose() {
             let filtered = words.filter(word => word.length == this.length);
             let choices = getChoices(filtered, this.options);
@@ -161,9 +169,7 @@ getWords(new URL('diceware.wordlist.asc.txt', import.meta.url).href).then(words 
 
         attributeChangedCallback(name, oldValue, newValue) {
             console.log('word-game', 'attributeChanged', { name, oldValue, newValue });
-            this.choices = this.choose();
-            this.remaining = this.guesses;
-            this.displayChoices();
+            this.reset();
         }
     })
 }).catch(console.error)
