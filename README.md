@@ -4,13 +4,13 @@
 
 ### main loop
 
-The main loop of the program runs until the player chooses to stop playing
-  A new game is created after prompting the user for the difficulty
-  While the game hasn't ended
-    The player is prompted to keep guessing
-  Once the game has ended, the player is informed if they won or lost
-  The player is then asked if they want to replay
-    If not, the game ends
+The main loop of the program runs until the player chooses to stop playing  
+  A new game is created after prompting the user for the difficulty  
+  While the game hasn't ended  
+    The player is prompted to keep guessing  
+  Once the game has ended, the player is informed if they won or lost  
+  The player is then asked if they want to replay  
+    If not, the game ends  
     
 
 ### Game class
@@ -31,7 +31,7 @@ From these inputs the following are created
 - Whether or not the game is over (starting false)
 
 ### game.prompt
-From this game the program repeatedly prompts the player for a selection
+From this game the program repeatedly prompts the player for a selection  
 This process is as follows:
 
 1. Display the choices the player has
@@ -45,11 +45,11 @@ This process is as follows:
 
 ### game.getOption
 
-The player is prompted for a selection from the list of words
-If they haven't entered a number, ask them again
-If they haven't entered a number corresponding to an option, ask them again
-If they have entered a valid option but it was selected previously, ask them again
-Otherwise return their choice
+1. The player is prompted for a selection from the list of words
+2. If they haven't entered a number, ask them again
+3. If they haven't entered a number corresponding to an option, ask them again
+4. If they have entered a valid option but it was selected previously, ask them again
+5. Otherwise return their choice
 
 ### game.displayChoices
 
@@ -60,23 +60,23 @@ Otherwise return their choice
 
 ### Get choices
 
-The wordlist hasn't been distributed yet, so the game loads a list of words from Diceware
-The file is stripped so only the words remain as a list
-The words are filtered to a desired length passed into the function
-The number of words passed to the function are chosen randomly from the fitlered list and returned
+The wordlist hasn't been distributed yet, so the game loads a list of words from Diceware  
+The file is stripped so only the words remain as a list  
+The words are filtered to a desired length passed into the function  
+The number of words passed to the function are chosen randomly from the fitlered list and returned  
 
 ### Match Words
 
-Return the number of matching characters and positions of each letter in 2 words
-The words are itereated by character and matching letters are filtered out
-The length of these filtered characters is returned
+Return the number of matching characters and positions of each letter in 2 words  
+The words are itereated by character and matching letters are filtered out  
+The length of these filtered characters is returned  
 
 ### Get Settings
 
-The user is prompted for their desired difficulty
-If the response doesn't stat with E, e, M, m, H, or h, they are told to enter a new value
-Based on their response, the number of choices and guesses for the game is returned
-The choices and guesses corresponding to each difficulty setting are as follows from the assignment outline
+The user is prompted for their desired difficulty  
+If the response doesn't stat with E, e, M, m, H, or h, they are told to enter a new value  
+Based on their response, the number of choices and guesses for the game is returned  
+The choices and guesses corresponding to each difficulty setting are as follows from the assignment outline  
 
 - Easy: 7 Choices and 5 Guesses
 - Medium: 8 Choices and 4 Guesses
